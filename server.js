@@ -40,9 +40,10 @@ bot.onText(/^\/random ([0-9]+)/, (msg, match) => {
   try {
     if (match && match.length > 1) {
       const length = +match[1];
-      const result = [];
-      while ([...new Set(result)].length < length) {
+      let result = [];
+      while (result.length < length) {
         result.push(random());
+        result = [...new Set(result)]
       }
       result.forEach((e) => bot.sendMessage(chatId, e));
     } else {
