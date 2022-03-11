@@ -25,26 +25,39 @@ const list = [
   "Síp Phương",
   "Oanh ca ca",
   "anh Viễn",
-  "Dũng cảm lên"
+  "Dũng cảm lên",
 ];
 
 const random = () => {
- 
   const rndInt = Math.floor(Math.random() * list.length) + 1;
   return list[rndInt - 1];
 };
 
 // Matches "/echo [whatever]"
-bot.onText(/^\/random/, (msg, match) => {
+bot.onText(/^\/random ([0-9]+)/, (msg, match) => {
   const chatId = msg.chat.id;
 
-  bot.sendMessage(chatId, random());
+  try {
+    if (match && match.length > 1) {
+      const length = +match[1];
+      const result = [];
+      while ([...new Set(result)].length < length) {
+        result.push(random());
+      }
+      result.forEach((e) => bot.sendMessage(chatId, e));
+    } else {
+      bot.sendMessage(chatId, random());
+    }
+    return;
+  } catch (e) {
+    bot.sendMessage(chatId, random());
+  }
 });
 
 bot.onText(/^\/member/, (msg, match) => {
   const chatId = msg.chat.id;
 
-  bot.sendMessage(chatId, list.join(' '));
+  bot.sendMessage(chatId, list.join(" "));
 });
 
 // // Listen for any kind of message. There are different kinds of
