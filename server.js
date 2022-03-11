@@ -14,20 +14,22 @@ const token = "5139157367:AAHBlRR4nnj92nJbFL3LdALmeHddHGxcnY0";
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true });
 
+const list = [
+  "Leo nè",
+  "anh Thuận Long An",
+  "Hiếu laptop",
+  "anh Quân kutoe",
+  "Di Di",
+  "Chị Thạnh",
+  "Hạnh Darkwa'",
+  "Síp Phương",
+  "Oanh ca ca",
+  "anh Viễn",
+  "Dũng cảm lên"
+];
+
 const random = () => {
-  const list = [
-    "Leo nè",
-    "anh Thuận Long An",
-    "Hiếu laptop",
-    "anh Quân kutoe",
-    "Di Di",
-    "Chị Thạnh",
-    "Hạnh Darkwa'",
-    "Síp Phương",
-    "Oanh ca ca",
-    "anh Viễn",
-    "Dũng cảm lên"
-  ];
+ 
   const rndInt = Math.floor(Math.random() * list.length) + 1;
   return list[rndInt - 1];
 };
@@ -37,6 +39,12 @@ bot.onText(/^\/random/, (msg, match) => {
   const chatId = msg.chat.id;
 
   bot.sendMessage(chatId, random());
+});
+
+bot.onText(/^\/member/, (msg, match) => {
+  const chatId = msg.chat.id;
+
+  bot.sendMessage(chatId, list.join(' '));
 });
 
 // // Listen for any kind of message. There are different kinds of
