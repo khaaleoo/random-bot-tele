@@ -24,6 +24,9 @@ const random = () => {
     "Chị Thạnh",
     "Hạnh Darkwa'",
     "Síp Phương",
+    "Oanh ca ca",
+    "anh Viễn",
+    "Dũng cảm lên"
   ];
   const rndInt = Math.floor(Math.random() * list.length) + 1;
   return list[rndInt - 1];
