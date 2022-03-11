@@ -38,12 +38,13 @@ bot.onText(/^\/random ([0-9]+)/, (msg, match) => {
   const chatId = msg.chat.id;
 
   try {
+    console.log({ match });
     if (match && match.length > 1) {
       const length = +match[1];
       let result = [];
       while (result.length < length) {
         result.push(random());
-        result = [...new Set(result)]
+        result = [...new Set(result)];
       }
       result.forEach((e) => bot.sendMessage(chatId, e));
     } else {
