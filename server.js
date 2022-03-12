@@ -58,24 +58,26 @@ bot2.on("message", async (ctx) => {
       return;
     }
 
-    const match = message.match(/^\/random ([0-9]+)/);
-    if (match && match.length > 1) {
-      let length = +match[1];
-      if (length > LIST.length) length = LIST.length;
-      let result = [];
-      while (result.length < length) {
-        result.push(random(listClone));
-        result = [...new Set(result)];
+    const match = message.match(/^(\/random)( )?([0-9]+)?$/);
+    if (match) {
+      if (match[3]) {
+        let length = +match[3];
+        if (length > LIST.length) length = LIST.length;
+        let result = [];
+        while (result.length < length) {
+          result.push(random(listClone));
+          result = [...new Set(result)];
+        }
+        await sendMessage(ctx, result);
+      } else if (match[1] === "/random") {
+        ctx.reply(random(listClone));
       }
-      await sendMessage(ctx, result);
-    } else {
-      ctx.reply(random(listClone));
     }
     return;
   } catch (e) {
     console.log(e);
   }
-  ctx.reply(random(listClone));
+  // ctx.reply(random(listClone));
 });
 bot2.launch();
 // bot 2 end
