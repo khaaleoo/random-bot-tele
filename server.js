@@ -1,4 +1,3 @@
-import TelegramBot from "node-telegram-bot-api";
 import express from "express";
 
 const app = express();
@@ -11,10 +10,7 @@ app.get("/", (req, res) => {
 // replace the value below with the Telegram token you receive from @BotFather
 const token = "5139157367:AAHBlRR4nnj92nJbFL3LdALmeHddHGxcnY0";
 
-// Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, { polling: true });
-
-const list = [
+const LIST = [
   "Leo nè",
   "anh Thuận Long An",
   "Hiếu laptop",
@@ -25,51 +21,64 @@ const list = [
   "Síp Phương",
   "Oanh ca ca",
   "anh Viễn",
-  "Dũng cảm lên",
+  "Dũng đệ đệ",
 ];
 
-const random = () => {
-  const rndInt = Math.floor(Math.random() * list.length) + 1;
-  return list[rndInt - 1];
+const random = (listClone = []) => {
+  const rndInt = Math.floor(Math.random() * listClone.length) + 1;
+  const index = rndInt - 1;
+  console.log({ listClone: JSON.parse(JSON.stringify(listClone)), index });
+  const result = listClone[index];
+  listClone.splice(index, 1);
+  return result;
 };
 
-// Matches "/echo [whatever]"
-bot.onText(/^\/random ([0-9]+)/, (msg, match) => {
-  const chatId = msg.chat.id;
+const sendMessage = async (ctx, listMessage) => {
+  for (let i = 0; i < listMessage.length; i++) {
+    await ctx.reply(`${i + 1}. ${listMessage[i]}`);
+  }
+};
 
+import { Telegraf } from "telegraf";
+const bot2 = new Telegraf(token);
+
+// bot 2 start
+
+bot2.start((ctx) => ctx.reply("Welcome"));
+bot2.help((ctx) => ctx.reply("Send me a sticker"));
+bot2.on("sticker", (ctx) => ctx.reply("👍"));
+bot2.on("message", async (ctx) => {
+  const author =
+    ctx.update.message.from.username || ctx.update.message.from.first_name + ctx.update.message.from.last_name;
+  const message = ctx.update.message.text;
+  const listClone = [...LIST];
   try {
-    console.log({ match });
+    if (message.match(/^hello$/)) {
+      ctx.reply("hello " + author);
+      return;
+    }
+
+    const match = message.match(/^\/random ([0-9]+)/);
     if (match && match.length > 1) {
-      const length = +match[1];
+      let length = +match[1];
+      if (length > LIST.length) length = LIST.length;
       let result = [];
       while (result.length < length) {
-        result.push(random());
+        result.push(random(listClone));
         result = [...new Set(result)];
       }
-      result.forEach((e) => bot.sendMessage(chatId, e));
+      await sendMessage(ctx, result);
     } else {
-      bot.sendMessage(chatId, random());
+      ctx.reply(random(listClone));
     }
     return;
   } catch (e) {
-    bot.sendMessage(chatId, random());
+    console.log(e);
   }
+  ctx.reply(random(listClone));
 });
-
-bot.onText(/^\/member/, (msg, match) => {
-  const chatId = msg.chat.id;
-
-  bot.sendMessage(chatId, list.join(" "));
-});
-
-// // Listen for any kind of message. There are different kinds of
-// // messages.
-// bot.on("message", (msg) => {
-//   const chatId = msg.chat.id;
-//   console.log({ msg });
-//   // send a message to the chat acknowledging receipt of their message
-//     bot.sendMessage(chatId, 'Received your message');
-// });
+bot2.launch();
+// bot 2 end
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
