@@ -58,8 +58,11 @@ bot2.on("message", async (ctx) => {
       return;
     }
 
-    const match = message.match(/^(\/random)( )?([0-9]+)?$/);
+    const match = message.match(/^(\/random)( )?(-?[0-9]+)?$/);
     if (match) {
+      if (match[3][0] === "-") {
+        ctx.reply("Đừng có đem tui ra làm trò đùa mà năn nỉ đó...");
+      }
       if (match[3]) {
         let length = +match[3];
         if (length > LIST.length) length = LIST.length;
@@ -68,7 +71,7 @@ bot2.on("message", async (ctx) => {
           result.push(random(listClone));
           result = [...new Set(result)];
         }
-        await sendMessage(ctx, result);
+        sendMessage(ctx, result);
       } else if (match[1] === "/random") {
         ctx.reply(random(listClone));
       }
