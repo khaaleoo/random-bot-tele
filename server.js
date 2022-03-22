@@ -63,7 +63,7 @@ bot2.on("message", async (ctx) => {
       if (match[3]) {
         ctx.reply("Đừng có đùa tui mà");
       }
-      if (match[4]) {
+      else if (match[4]) {
         let length = +match[4];
         if (length > LIST.length) length = LIST.length;
         let result = [];
