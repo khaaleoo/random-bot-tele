@@ -58,10 +58,10 @@ bot2.on("message", async (ctx) => {
       return;
     }
 
-    const match = message.match(/^(\/random)( )?(-?[0-9]+)?$/);
+    const match = message.match(/^(\/random)( )?(-)?([0-9]+)?$/);
     if (match) {
-      if (match[3][0] === "-") {
-        ctx.reply("Đừng có đem tui ra làm trò đùa mà năn nỉ đó...");
+      if (String(match[4])[0] === "-") {
+        ctx.reply("Đừng có đùa tui mà");
       }
       if (match[3]) {
         let length = +match[3];
