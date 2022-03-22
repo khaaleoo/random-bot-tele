@@ -60,11 +60,11 @@ bot2.on("message", async (ctx) => {
 
     const match = message.match(/^(\/random)( )?(-)?([0-9]+)?$/);
     if (match) {
-      if (String(match[4])[0] === "-") {
+      if (match[3]) {
         ctx.reply("Đừng có đùa tui mà");
       }
-      if (match[3]) {
-        let length = +match[3];
+      if (match[4]) {
+        let length = +match[4];
         if (length > LIST.length) length = LIST.length;
         let result = [];
         while (result.length < length) {
