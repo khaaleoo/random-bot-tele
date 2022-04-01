@@ -22,12 +22,12 @@ const LIST = [
   "Oanh ca ca",
   "anh Viễn",
   "Dũng đệ đệ",
+  "Quang thất tình",
 ];
 
 const random = (listClone = []) => {
   const rndInt = Math.floor(Math.random() * listClone.length) + 1;
   const index = rndInt - 1;
-  console.log({ listClone: JSON.parse(JSON.stringify(listClone)), index });
   const result = listClone[index];
   listClone.splice(index, 1);
   return result;
@@ -37,6 +37,31 @@ const sendMessage = async (ctx, listMessage) => {
   for (let i = 0; i < listMessage.length; i++) {
     await ctx.reply(`${i + 1}. ${listMessage[i]}`);
   }
+};
+
+const randomMulti = (ctx, number, listClone, listBase) => {
+  let length = +number;
+  if (length > listBase.length) length = listBase.length;
+  let result = [];
+  while (result.length < length) {
+    result.push(random(listClone));
+    result = [...new Set(result)];
+  }
+  sendMessage(ctx, result);
+  return;
+};
+
+const parseStringListNameToString = (string = "[]") => {
+  const list = string.slice(1, string.length - 1).split`,`;
+  return list;
+};
+const randomCustom = (ctx, list) => {
+  if (list instanceof Array) {
+    ctx.reply(random(list));
+    return
+  }
+  const listParsed = parseStringListNameToString(list);
+  ctx.reply(random(listParsed));
 };
 
 import { Telegraf } from "telegraf";
@@ -58,23 +83,32 @@ bot2.on("message", async (ctx) => {
       return;
     }
 
-    const match = message.match(/^(\/random)( )?(-)?([0-9]+)?$/);
+    let match = message.match(/^(\/random)( )?(-)?([0-9]+)?$/);
     if (match) {
       if (match[3]) {
         ctx.reply("Đừng có đùa tui mà");
-      }
-      else if (match[4]) {
-        let length = +match[4];
-        if (length > LIST.length) length = LIST.length;
-        let result = [];
-        while (result.length < length) {
-          result.push(random(listClone));
-          result = [...new Set(result)];
-        }
-        sendMessage(ctx, result);
+        return;
+      } else if (match[4]) {
+        randomMulti(ctx, +match[4], listClone, LIST);
+        randomMulti;
       } else if (match[1] === "/random") {
         ctx.reply(random(listClone));
+        return;
       }
+    }
+
+    // random type: theo tên được cung cấp
+    match = message.match(/^(\/random)( )(\[.+\])$/);
+    if (match && match[3]) {
+      randomCustom(ctx, match[3]);
+      return;
+    }
+
+    match = message.match(/^(\/random)( )([0-9]+)( )(\[.+\])$/);
+    if (match && match[3] && match[5]) {
+      const list = parseStringListNameToString(match[5]);
+      randomMulti(ctx, +match[3], list, [...list]);
+      return;
     }
     return;
   } catch (e) {
