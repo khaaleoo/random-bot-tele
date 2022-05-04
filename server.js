@@ -21,8 +21,11 @@ const LIST = [
   "Síp Phương",
   "Oanh ca ca",
   "anh Viễn",
-  "Dũng đệ đệ",
+  "Dũng NanoId",
   "Quang thất tình",
+  "Linh ơi",
+  "Bảo Bảo",
+  "Tùng Anh baby"
 ];
 
 const random = (listClone = []) => {
