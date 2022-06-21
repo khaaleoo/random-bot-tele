@@ -26,7 +26,10 @@ const LIST = [
   "Linh ơi",
   "Bảo Bảo",
   "Tùng Anh baby",
-  "Trung (tình lắm)"
+  "vợ Tùng Anh",
+  "Huy xiềng xích",
+  "Quang Light",
+  "Hậu"
 ];
 
 const random = (listClone = []) => {
