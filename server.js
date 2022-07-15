@@ -29,7 +29,7 @@ const LIST = [
   "Huy xiềng xích",
   "Quang Light",
   "Hậu",
-  "Quang light",
+  "Lan à",
   "Merlot Wine",
   "Duy 200",
   "Hiệp"
