@@ -21,15 +21,18 @@ const LIST = [
   "Síp Phương",
   "Oanh ca ca",
   "anh Viễn",
-  "Dũng NanoId",
-  "Quang thất tình",
+  "Quang dark",
   "Linh ơi",
   "Bảo Bảo",
   "Tùng Anh baby",
   "vợ Tùng Anh",
   "Huy xiềng xích",
   "Quang Light",
-  "Hậu"
+  "Hậu",
+  "Quang light",
+  "Merlot Wine",
+  "Duy 200",
+  "Hiệp"
 ];
 
 const random = (listClone = []) => {
